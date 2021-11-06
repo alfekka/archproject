@@ -65,6 +65,8 @@ public:
 
 private:
     std::string _format;
+      
 };
 
 #endif
+
