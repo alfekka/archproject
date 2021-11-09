@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 
 project(hl_event_server C CXX)
 
-SET (EXAMPLE_BINARY "hl_mai_lab_01")
+SET (EXAMPLE_BINARY "lab1")
 
 find_package(OpenSSL)
 find_package(GTest REQUIRED)
@@ -17,7 +17,7 @@ endif()
 
 include_directories(${Poco_INCLUDE_DIRS})
 include_directories(${GTEST_INCLUDE_DIRS})
-include_directories("/usr/include/mysql")
+include_directories("/poco/data/mysql")
 include_directories("/usr/local/include/mysql")
 include_directories(${Boost_INCLUDE_DIR})
 link_directories("/usr/local/lib")
