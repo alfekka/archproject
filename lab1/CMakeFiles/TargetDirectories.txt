@@ -1,0 +1,9 @@
+/home/parallels/archproject/lab1/CMakeFiles/install/strip.dir
+/home/parallels/archproject/lab1/CMakeFiles/install/local.dir
+/home/parallels/archproject/lab1/CMakeFiles/edit_cache.dir
+/home/parallels/archproject/lab1/CMakeFiles/package_source.dir
+/home/parallels/archproject/lab1/CMakeFiles/install.dir
+/home/parallels/archproject/lab1/CMakeFiles/list_install_components.dir
+/home/parallels/archproject/lab1/CMakeFiles/rebuild_cache.dir
+/home/parallels/archproject/lab1/CMakeFiles/package.dir
+/home/parallels/archproject/lab1/CMakeFiles/hl_mai_lab_01.dir
