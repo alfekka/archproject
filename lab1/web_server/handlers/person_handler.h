@@ -71,7 +71,7 @@ private:
         return true;
     };
 
-    bool check_login(const std::string &email, std::string &reason)
+    bool check_login(const std::string &login, std::string &reason)
     {
          if (login.length() < 3)
         {
@@ -152,7 +152,7 @@ public:
                             person.first_name() = form.get("first_name");
                             person.last_name() = form.get("last_name");
                             person.login() = form.get("login");
-                            person.age() = form.get("age");
+                            person.age() = atoi(form.get("age").c_str());
 
                             bool check_result = true;
                             std::string message;

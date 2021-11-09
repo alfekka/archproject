@@ -13,7 +13,7 @@ namespace database
             std::string _login;
             std::string _first_name;
             std::string _last_name;
-            unsigned int age{0};
+            int _age;
 
         public:
 
@@ -23,13 +23,13 @@ namespace database
             const std::string &get_login() const;
             const std::string &get_first_name() const;
             const std::string &get_last_name() const;
-            const unsigned int &get_age() const;
+            const int &get_age() const;
 
             long&        id();
             std::string &login();
             std::string &first_name();
             std::string &last_name();
-            unsigned int &age();
+            int& age();
 
             static void init();
             static Person read_by_login(std::string login);

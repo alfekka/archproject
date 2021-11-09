@@ -11,6 +11,7 @@
 
 #include <sstream>
 #include <exception>
+#include <fstream>
 
 using namespace Poco::Data::Keywords;
 using Poco::Data::Session;
@@ -66,7 +67,7 @@ namespace database
                 std::string login = object->getValue<std::string>("login");
                 std::string first_name = object->getValue<std::string>("first_name");
                 std::string last_name = object->getValue<std::string>("last_name");
-                integer title = object->getValue<integer>("age");
+                int age = object->getValue<int>("age");
                 Poco::Data::Statement insert(session);
                 insert << "INSERT INTO Author (login, first_name,last_name,age) VALUES(?, ?, ?, ?)",
                     Poco::Data::Keywords::use(login),
@@ -99,7 +100,7 @@ namespace database
         Poco::JSON::Object::Ptr root = new Poco::JSON::Object();
 
         root->set("id", _id);
-        root->login("login", _login);
+        root->set("login", _login);
         root->set("first_name", _first_name);
         root->set("last_name", _last_name);
         root->set("age", _age);
@@ -119,7 +120,7 @@ namespace database
         person.login() = object->getValue<std::string>("login");
         person.first_name() = object->getValue<std::string>("first_name");
         person.last_name() = object->getValue<std::string>("last_name");
-        person.age() = object->getValue<unsigned int>("age");
+        person.age() = object->getValue<int>("age");
 
         return person;
     }
@@ -204,7 +205,7 @@ namespace database
             Person a;
             select << "SELECT id, login, first_name, last_name, age FROM Person",
                 into(a._id),
-                into(a._login,
+                into(a._login),
                 into(a._first_name),
                 into(a._last_name),
                 into(a._age),
@@ -243,7 +244,7 @@ namespace database
             last_name+="%";
             select << "SELECT id, login, first_name, last_name, age FROM Person where first_name LIKE ? and last_name LIKE ?",
                 into(a._id),
-                into(a._login,
+                into(a._login),
                 into(a._first_name),
                 into(a._last_name),
                 into(a._age),
@@ -319,7 +320,7 @@ namespace database
         return _id;
     }
 	
-    long Person::get_login() const
+    const std::string &Person::get_login() const
     {
         return _login;
     }
@@ -334,7 +335,7 @@ namespace database
         return _last_name;
     }
 
-    const std::string &Person::get_age() const
+    const int &Person::get_age() const
     {
         return _age;
     }
@@ -359,7 +360,7 @@ namespace database
         return _last_name;
     }
 
-    unsigned int &Person::age()
+    int &Person::age()
     {
         return _age;
     }

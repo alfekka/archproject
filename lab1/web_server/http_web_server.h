@@ -192,6 +192,3 @@ private:
 };
 #endif
 
-    bool _helpRequested;
-};
-#endif // !HTTPWEBSERVER
