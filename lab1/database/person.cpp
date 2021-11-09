@@ -38,7 +38,47 @@ namespace database
                         << "`last_name` VARCHAR(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,"
                         << "`age` INTEGER NULL,"
                         << "PRIMARY KEY (`login`),KEY `fn` (`first_name`),KEY `ln` (`last_name`));",
-                now;
+
+            create_stmt.execute();
+            std::cout << "table created" << std::endl;
+
+            Poco::Data::Statement truncate_stmt(session);
+            truncate_stmt << "TRUNCATE TABLE `Person`;";
+            truncate_stmt.execute();
+
+            // https://www.onlinedatagenerator.com/
+            std::string json;
+            std::ifstream is("../data.json");
+            std::istream_iterator<char> eos;
+            std::istream_iterator<char> iit(is);
+            while (iit != eos)
+                json.push_back(*(iit++));
+            is.close();
+
+            Poco::JSON::Parser parser;
+            Poco::Dynamic::Var result = parser.parse(json);
+            Poco::JSON::Array::Ptr arr = result.extract<Poco::JSON::Array::Ptr>();
+
+            size_t i{0};
+            for (i = 0; i < arr->size(); ++i)
+            {
+                Poco::JSON::Object::Ptr object = arr->getObject(i);
+                std::string login = object->getValue<std::string>("login");
+                std::string first_name = object->getValue<std::string>("first_name");
+                std::string last_name = object->getValue<std::string>("last_name");
+                integer title = object->getValue<integer>("age");
+                Poco::Data::Statement insert(session);
+                insert << "INSERT INTO Author (login, first_name,last_name,age) VALUES(?, ?, ?, ?)",
+                    Poco::Data::Keywords::use(login),
+                    Poco::Data::Keywords::use(first_name),
+                    Poco::Data::Keywords::use(last_name),
+                    Poco::Data::Keywords::use(age);
+
+                insert.execute();
+            }
+
+                    std::cout << "Inserted " << i << " records" << std::endl;
+
         }
 
         catch (Poco::Data::MySQL::ConnectionException &e)
