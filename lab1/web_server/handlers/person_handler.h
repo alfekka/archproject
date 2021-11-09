@@ -76,6 +76,7 @@ private:
          if (login.length() < 3)
         {
             reason = "Login must be at least 3 signs";
+            std::cout << "1 case" << std::endl;
             return false;
         }
         
@@ -107,12 +108,12 @@ public:
         response.setContentType("application/json");
         std::ostream &ostr = response.send();
 
-        if (form.has("id"))
+        if (request.getMethod() == "GET" && form.has("login"))
         {
-            long id = atol(form.get("id").c_str());
+            std::string login = form.get("login");
             try
             {
-                database::Person result = database::Person::read_by_id(id);
+                database::Person result = database::Person::read_by_login(login);
                 Poco::JSON::Stringifier::stringify(result.toJSON(), ostr);
                 return;
             }
@@ -122,7 +123,7 @@ public:
                 return;
             }
         }
-        else if (form.has("search"))
+        else if (request.getMethod() == "GET" &&  form.has("search"))
         {
             try
             {
@@ -141,12 +142,12 @@ public:
             }
             return;
         }
-        else if (form.has("add"))
+        else if (request.getMethod() == "POST" && form.has("add"))
         {
-            if (form.has("first_name"))
-                if (form.has("last_name"))
-                    if (form.has("age"))
-                        if (form.has("login"))
+            if (form.has("login"))
+                if (form.has("first_name"))
+                    if (form.has("last_name"))
+                        if (form.has("age"))
                         {
                             database::Person person;
                             person.first_name() = form.get("first_name");
@@ -177,9 +178,7 @@ public:
                                 check_result = false;
                                 message += reason;
                                 message += "<br>";
-                            }
-
-                            
+                            }    
 
                             if (check_result)
                             {

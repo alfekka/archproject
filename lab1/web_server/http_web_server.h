@@ -187,8 +187,5 @@ protected:
 
 private:
     bool _helpRequested;
-    
-    
 };
-#endif
-
+#endif // !HTTPWEBSERVER
