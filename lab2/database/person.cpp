@@ -170,7 +170,7 @@ namespace database
             else
                 throw std::logic_error("key not found in the cache");
         }
-        catch (std::exception err)
+        catch (std::exception &err)
         {
             //std::cout << "error:" << err.what() << std::endl;
             throw;
@@ -199,7 +199,7 @@ namespace database
         std::stringstream ss;
         Poco::JSON::Stringifier::stringify(toJSON(), ss);
         std::string message = ss.str();
-        database::Cache::get().put(_id, message);
+        database::Cache::get().put(_login, message);
     }
 
     std::vector<Person> Person::read_all()
@@ -215,7 +215,6 @@ namespace database
                 into(a._first_name),
                 into(a._last_name),
                 into(a._age),
-                use(login),
                 range(0, 1); //  iterate over result set one row at a time
 
             while (!select.done())
@@ -289,7 +288,7 @@ namespace database
             Poco::Data::Statement insert(session);
 
             insert << "INSERT INTO Person (login,first_name,last_name,age) VALUES(?, ?, ?, ?)",
-                use(_login);
+                use(_login),
                 use(_first_name),
                 use(_last_name),
                 use(_age),
@@ -298,7 +297,7 @@ namespace database
             //insert.execute();
 
             Poco::Data::Statement select(session);
-            select << "SELECT LAST_INSERT_ID()",
+            select << "SELECT LAST_INSERT_login()",
                 into(_login),
                 range(0, 1); //  iterate over result set one row at a time
 
