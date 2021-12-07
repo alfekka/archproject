@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dummy Social Network</title>
+    <style>
+        #main {
+            border: 2px solid darkgrey;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 100px auto;
+            width: 300px;
+            height: 400px;
+            position: fixed;
+            left: 50px;
+            top: 30px;
+        }
+        #contacts {
+            border: 2px solid darkgrey;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 100px auto;
+            width: 300px;
+            height: 400px;
+            position: fixed;
+            left: 400px;
+            top: 30px;
+        }
+
+        #messages {
+            border: 2px solid darkgrey;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 100px auto;
+            width: 300px;
+            height: 400px;
+            left: 750px;
+            top: 30px;
+            position: fixed;
+        }
+
+
+    </style>
+    <script>
+        function login() {
+
+            const queryString = window.location.search;
+            var login = encodeURIComponent(document.getElementById("user_login").value);
+            var xhr = new XMLHttpRequest();
+
+            xhr.open("GET", "person?login=" + login, true);
+            xhr.send();
+            
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var jsonData = xhr.responseText;
+                    var jsObject = JSON.parse(jsonData);
+                    document.getElementById("first_name").value = jsObject.first_name;
+                    document.getElementById("last_name").value = jsObject.last_name;
+                    document.getElementById("age").value = jsObject.age;
+
+                    contacts();
+                }
+            }
+
+        };
+
+        function contacts(){
+            const queryString = window.location.search;
+            var login_from = (document.getElementById("user_login");
+            var xhr = new XMLHttpRequest();
+
+            document.getElementById("contact_list").innerHTML = "";
+            xhr.open("GET", "message?login=" + login_from, true);
+            xhr.send();
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var jsonData = xhr.responseText;
+
+                    var jsObject = JSON.parse(jsonData);
+                    var length = jsObject.length;
+                    var text = "<ul login='suggestion-list'>";
+                    for (var i = 0; i < length; i++){
+                        var msg= jsObject[i]
+                        text += "<li onClick=\"set_contact("+ msg.login +")\">" + msg.login + "</li>";
+                    }
+                    text += "</ul>"
+                    document.getElementById("contact_list").innerHTML = text;
+                }
+                
+            }  
+        }
+
+        function set_contact(contact){
+            document.getElementById("login_to").value = contact;
+            messages();
+        }
+
+        function messages() {
+            const queryString = window.location.search;
+            var login_from = encodeURIComponent(document.getElementById("user_login").value);
+            var login_to = encodeURIComponent(document.getElementById("login_to").value);
+            var xhr = new XMLHttpRequest();
+
+            xhr.open("GET", "message?login_from=" + login_from+"&login_to="+login_to, true);
+            xhr.send();
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var jsonData = xhr.responseText;
+
+                    var jsObject = JSON.parse(jsonData);
+                    var length = jsObject.length;
+                    var text = "<ul login='suggestion-list'>";
+                    for (var i = 0; i < length; i++){
+                        var msg= jsObject[i];
+                        text += "<li> " + msg.message + "</li>";
+
+                    }
+                    text += "</ul>"
+                    document.getElementById("message_list").innerHTML = text;
+                }
+                
+            }
+        };
+
+        function send_message() {
+            const queryString = window.location.search;
+            var login_from = encodeURIComponent(document.getElementById("user_login").value);
+            var login_to = encodeURIComponent(document.getElementById("login_to").value);
+            var my_msg = encodeURIComponent(document.getElementById("message").value);
+            var xhr = new XMLHttpRequest();
+
+            xhr.open("GET", "message?login_from=" + login_from+"&login_to="+login_to+"&message="+my_msg+"&add", true);
+            xhr.send();
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    messages();
+                }
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <div login="main">
+        <h2>User</h2>
+        <label for="user_login">Login:</label><br />
+        <input type="text" login="user_login" name="user_login" oninput="login()"><hr/>
+        <hr/>
+
+        <label for="first_name">First name:</label><br />
+        <input type="text" login="first_name" name="first_name" oninput=""><hr/>
+        <label for="last_name">Last name:</label><br />
+        <input type="text" login="last_name" name="last_name" oninput=""><hr/>
+        <label for="age">Age:</label><br />
+        <input type="text" login="age" name="age" oninput=""><hr/>
+    </div>
+    <div login="contacts">
+        <h2>Contacts</h2>
+        <div login="contact_list"></div>
+    </div>
+    <div login="messages">
+        <h2>Messages</h2>
+        <label for="login_to">To ID:</label><br />
+        <input type="text" login="login_to" name="login_to" oninput="messages()"><hr/>
+
+        <label for="message">Message:</label><br />
+        <input type="text" login="message" name="message">
+        <input type="submit" value="Send" onclick="send_message()">
+        <br/>
+        <div login="message_list"></div>
+    </div>
+</body>
+
+</html>
