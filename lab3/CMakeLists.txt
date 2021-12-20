@@ -27,7 +27,7 @@ link_directories("/usr/local/lib")
 add_executable(${EXAMPLE_BINARY} main.cpp 
                                  config/config.cpp 
                                  database/database.cpp
-                                 database/author.cpp
+                                 database/person.cpp
                                  database/message.cpp)
 
 
@@ -53,6 +53,6 @@ set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
-set(CPACK_PACKAGE_CONTACT Dmitriy.Dzyuba@mts.ru)
+set(CPACK_PACKAGE_CONTACT Rvanova.lyu@phystech.edu)
 include(CPack)
 
